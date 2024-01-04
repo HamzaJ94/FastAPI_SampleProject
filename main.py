@@ -31,12 +31,12 @@ async def add_project(todo:dict) -> dict:
 
 todos = [
     {
-        "name": "Demo",
+        "name": "Project 1",
         "Description": "this is the 1st project",
         "Creation_Date": "04.01.2024"
     },
     {
-        "name": "CleanCode",
+        "name": "Project 2",
         "Description": "this is the 2nd project",
         "Creation_Date": "04.01.2024"
     }
