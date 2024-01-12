@@ -6,19 +6,19 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get('/todo', tags=['Read All Projects'])
+@app.get('/projects', tags=['Read All Projects'])
 async def get_projects() -> dict:
     return {"data": todos}
 
 
-@app.post("/todo", tags=["Read All Projects"])
+@app.post("/projects", tags=["Read All Projects"])
 async def add_projects(todo: dict) -> dict:
     todos.append(todo)
     return {
         "data": "A project has been added"
     }
 
-@app.put("/todo/{id}", tags=["Read All Projects"])
+@app.put("/projects/{id}", tags=["Read All Projects"])
 async def update_projects_list(id: int, body: dict) -> dict:
     for todo in todos:
         if int((todo['id'])) == id:
@@ -30,7 +30,7 @@ async def update_projects_list(id: int, body: dict) -> dict:
             "data": f"Project with this id number {id} was not found!"
         }
 
-@app.put("/todo/{id}", tags=["Read All Projects"])
+@app.put("/projects/{id}", tags=["Read All Projects"])
 async def update_projects(id: int, body: dict) -> dict:
     for todo in todos:
         if int((todo['id'])) == id:
@@ -43,7 +43,7 @@ async def update_projects(id: int, body: dict) -> dict:
         }
 
 
-@app.delete("/todo/{id}", tags=["Read All Projects"])
+@app.delete("/projects/{id}", tags=["Read All Projects"])
 async def delete_projects(id: int) -> dict:
     for todo in todos:
         if (todo["id"]) == id:
