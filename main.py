@@ -1,59 +1,61 @@
 """Entry point for the API."""
 
 from enum import Enum
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
+from pydantic import BaseModel
 
 app = FastAPI()
 
+router = APIRouter()
 
-@app.get('/projects', tags=['Read All Projects'])
-async def get_projects() -> dict:
-    return {"data": projectlist}
-
-
-@app.post("/projects", tags=["Read All Projects"])
-async def add_projects(projects: dict) -> dict:
-    projectlist.append(projects)
-    return {
-        "data": "A project has been added"
-    }
-
-@app.put("/projects/{id}", tags=["Read All Projects"])
-async def update_projects_list(id: int, body: dict) -> dict:
-    for projects in projectlist:
-        if int((projects['id'])) == id:
-            projects['Description'] = body ['Description']
-            return{
-                "data": f"Project with id {id} has been updated"
-            }
-        return{
-            "data": f"Project with this id number {id} was not found!"
-        }
-
-@app.put("/projects/{id}", tags=["Read All Projects"])
-async def update_projects(id: int, body: dict) -> dict:
-    for projects in projectlist:
-        if int((projects['id'])) == id:
-            projects['Description'] = body['Description']
-            return {
-                "data": f"Project with id {id} has been updated"
-            }
-        return {
-            "data": f"Project with this id number {id} was not found!"
-        }
+# @app.get('/projects', tags=['Read All Projects'])
+# async def get_projects() -> dict:
+#     return {"data": projectlist}
 
 
-@app.delete("/projects/{id}", tags=["Read All Projects"])
-async def delete_projects(id: int) -> dict:
-    for projects in projectlist:
-        if int((projects["id"])) == id:
-            projectlist.remove(projects)
-            return {
-                "data": f"Project with id {id} has been deleted"
-            }
-        return {
-            "data": f"Project with id {id} wasn't found!"
-        }
+# @app.post("/projects", tags=["Read All Projects"])
+# async def add_projects(projects: dict) -> dict:
+#     projectlist.append(projects)
+#     return {
+#         "data": "A project has been added"
+#     }
+
+# @app.put("/projects/{id}", tags=["Read All Projects"])
+# async def update_projects_list(id: int, body: dict) -> dict:
+#     for projects in projectlist:
+#         if int((projects['id'])) == id:
+#             projects['Description'] = body ['Description']
+#             return{
+#                 "data": f"Project with id {id} has been updated"
+#             }
+#         return{
+#             "data": f"Project with this id number {id} was not found!"
+#         }
+
+# @app.put("/projects/{id}", tags=["Read All Projects"])
+# async def update_projects(id: int, body: dict) -> dict:
+#     for projects in projectlist:
+#         if int((projects['id'])) == id:
+#             projects['Description'] = body['Description']
+#             return {
+#                 "data": f"Project with id {id} has been updated"
+#             }
+#         return {
+#             "data": f"Project with this id number {id} was not found!"
+#         }
+
+
+# @app.delete("/projects/{id}", tags=["Read All Projects"])
+# async def delete_projects(id: int) -> dict:
+#     for projects in projectlist:
+#         if int((projects["id"])) == id:
+#             projectlist.remove(projects)
+#             return {
+#                 "data": f"Project with id {id} has been deleted"
+#             }
+#         return {
+#             "data": f"Project with id {id} wasn't found!"
+#         }
 
 projectlist = [
     {
@@ -93,4 +95,57 @@ async def get_model(model_name : ModelName):
         return {"model_name": model_name, "message": "LeCNN all the images"}
 
     return {"model_name": model_name, "message": "Have some residuals"}
-    
+
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+
+@app.post("/items/")
+async def create_item(item: Item):
+    item_dict = item.dict()
+    if item.tax:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"price_with_tax": price_with_tax})
+    return item_dict
+
+# Routing Endpoints
+
+@router.get('/projects', tags=['Read All Projects'])
+async def get_projects() -> dict:
+    return {"data": projectlist}
+
+@router.post("/projects", tags=["Read All Projects"])
+async def add_projects(projects: dict) -> dict:
+    projectlist.append(projects)
+    return {
+        "data": "A project has been added"
+    }
+
+@router.put("/projects/{id}", tags=["Read All Projects"])
+async def update_projects_list(id: int, body: dict) -> dict:
+    for projects in projectlist:
+        if int((projects['id'])) == id:
+            projects['Description'] = body ['Description']
+            return{
+                "data": f"Project with id {id} has been updated"
+            }
+        return{
+            "data": f"Project with this id number {id} was not found!"
+        }
+
+@router.delete("/projects/{id}", tags=["Read All Projects"])
+async def delete_projects(id: int) -> dict:
+    for projects in projectlist:
+        if int((projects["id"])) == id:
+            projectlist.remove(projects)
+            return {
+                "data": f"Project with id {id} has been deleted"
+            }
+        return {
+            "data": f"Project with id {id} wasn't found!"
+        }
+
+app.include_router(router, tags=["Projects Re-Routed"])
