@@ -1,24 +1,23 @@
 # Routing Endpoints
 
-from enum import Enum
 from fastapi import FastAPI, APIRouter
 
 app = FastAPI()
 
 router = APIRouter()
 
-@router.get('/projects', tags=['Read All Projects'])
+@router.get('/')
 async def get_projects() -> dict:
     return {"data": projectlist}
 
-@router.post("/projects", tags=["Read All Projects"])
+@router.post("/")
 async def add_projects(projects: dict) -> dict:
     projectlist.append(projects)
     return {
         "data": "A project has been added"
     }
 
-@router.put("/projects/{id}", tags=["Read All Projects"])
+@router.put("/update-projects/{id}")
 async def update_projects_list(id: int, body: dict) -> dict:
     for projects in projectlist:
         if int((projects['id'])) == id:
@@ -30,7 +29,7 @@ async def update_projects_list(id: int, body: dict) -> dict:
             "data": f"Project with this id number {id} was not found!"
         }
 
-@router.delete("/projects/{id}", tags=["Read All Projects"])
+@router.delete("/remove-projects/{id}")
 async def delete_projects(id: int) -> dict:
     for projects in projectlist:
         if int((projects["id"])) == id:
@@ -56,5 +55,3 @@ projectlist = [
         "Creation_Date": "04.01.2024"
     }
 ]
-
-app.include_router(router, tags=["Projects Re-Routed"])
