@@ -1,36 +1,26 @@
-# FastAPI_Project-Backend
+# MongoDB with FastAPI
 
-## Introduction
+This is a small sample project demonstrating how to build an API with [MongoDB](https://developer.mongodb.com/) and [FastAPI](https://fastapi.tiangolo.com/).
+It was written to accompany a [blog post](https://developer.mongodb.com/quickstart/python-quickstart-fastapi/) - you should go read it!
 
-A FastAPI sample project for a Backend that displays the creation of a Virtual Environment, Project structure, and FastAPI applications.
+## TL;DR
 
----
+If you really don't want to read the [blog post](https://developer.mongodb.com/quickstart/python-quickstart-fastapi/) and want to get up and running,
+activate your Python virtualenv, and then run the following from your terminal (edit the `MONGODB_URL` first!):
 
-## Getting started
+```bash
+# Install the requirements:
+pip install -r requirements.txt
 
-### Development
+# Configure the location of your MongoDB database:
+export MONGODB_URL="mongodb+srv://<username>:<password>@<url>/<db>?retryWrites=true&w=majority"
 
-This application requires you to have the following tools installed:
-
-- Python 3.11+
-
-  Create a Virtual Environment (Optional but Recommended):
-
-- python -m venv fastapi-env
-
-- Install FastAPI and Uvicorn:
-  pip install fastapi uvicorn
-
-Run the project with
-
-```sh
-uvicorn main:app --reload
+# Start the service:
+uvicorn app:app --reload
 ```
 
-- Uvicorn running on http://127.0.0.1:8000
+(Check out [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) if you need a MongoDB database.)
 
-### Documentation
+Now you can load http://localhost:8000/docs in your browser ... but there won't be much to see until you've inserted some data.
 
-Automatic interactive API documentation (provided by Swagger UI):
-
-- http://127.0.0.1:8000/docs
+If you have any questions or suggestions, check out the [MongoDB Community Forums](https://developer.mongodb.com/community/forums/)!
